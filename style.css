@@ -1,0 +1,61 @@
+body {
+  margin: 5px;
+  background-color: rgb(172, 238, 107);
+}
+.logo {
+  display: block;
+  margin: auto;
+  height: 100px;
+  width: 100px;
+}
+h1 {
+  border: 1px solid rebeccapurple;
+  margin: inherit;
+  text-align: center;
+}
+.container {
+  margin: auto;
+  width: 60%;
+  height: 60vh;
+  border: 1.5px solid black;
+  background-color: rgb(241, 157, 157);
+  border-radius: 10px;
+  overflow-y: auto;
+}
+.message {
+  background-color: burlywood;
+  width: 25%;
+  padding: 0px 5px;
+  margin-top: 5px;
+  border-radius: 15px;
+  border: 0.5px black dashed;
+}
+.left {
+  float: left;
+  clear: both;
+  margin-left: 5px;
+}
+.right {
+  float: right;
+  clear: both;
+  margin-right: 5px;
+}
+.send {
+  text-align: center;
+}
+.btn {
+  border-radius: 5px;
+  text-align: center;
+}
+.btn:hover {
+  background-color: black;
+  color: white;
+  cursor: pointer;
+}
+#messageInp {
+  border-radius: 5px;
+  width: 860px;
+  margin-top: 3px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+}

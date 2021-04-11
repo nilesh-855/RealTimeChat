@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>ChatAppReal</title>
+    <style>
+      body {
+        margin: 5px;
+        background-color: #000814;
+      }
+      .logo {
+        display: block;
+        margin: auto;
+        height: 100px;
+        width: 100px;
+      }
+      h1 {
+        /* border: 2px dashed #118ab2; */
+        /* color: white; */
+        /* margin: inherit; */
+        /* margin: 20px 570px; */
+        margin: 0% 20% 0.5% 20%;
+        text-align: center;
+      }
+      .container {
+        margin: auto;
+        width: 40%;
+        height: 80vh;
+        border: 1.5px solid white;
+        background-color: #000814;
+        border-radius: 10px;
+        overflow-y: auto;
+      }
+      .message {
+        background-color: #f6f4d2;
+        min-width: 45%;
+        padding: 3px 5px;
+        margin-top: 10px;
+        border-radius: 15px;
+        border: 0.5px black dashed;
+        max-width: 80%;
+      }
+      .message:hover {
+        background-color: #000814;
+        color: white;
+        cursor: pointer;
+        border-radius: 0px;
+      }
+      .left {
+        float: left;
+        clear: both;
+        margin-left: 5px;
+      }
+      .right {
+        float: right;
+        clear: both;
+        margin-right: 5px;
+      }
+
+      .send {
+        text-align: center;
+      }
+      .btn {
+        border-radius: 5px;
+        text-align: center;
+      }
+      .btn:hover {
+        background-color: black;
+        color: white;
+        cursor: pointer;
+      }
+      #messageInp {
+        border-radius: 5px;
+        width: 36.5%;
+        margin-top: 3px;
+        padding-top: 3px;
+        padding-bottom: 3px;
+      }
+      .blink {
+        animation: blinker 6s linear infinite;
+      }
+      @keyframes blinker {
+        0% {
+          opacity: 1;
+          color: whitesmoke;
+        }
+        20% {
+          color: red;
+          opacity: 1;
+        }
+        40% {
+          color: yellow;
+          opacity: 1;
+        }
+        60% {
+          color: rgb(243, 16, 53);
+          opacity: 1;
+        }
+        80% {
+          color: brown;
+          opacity: 1;
+        }
+        /* 75%{
+          color:aqua;
+          opacity: 1;
+        } */
+        100% {
+          opacity: 1;
+          color: green;
+        }
+      }
+    </style>
+
+    <!-- <link rel="stylesheet" href="style.css" /> -->
+  </head>
+  <body>
+    <!-- <img class="logo"  src="logo.png" alt="" /> -->
+
+    <h1 class="blink">Welcome to Chat App..</h1>
+
+    <div class="container">
+      <!-- <div class="message right">Nilesh:Hey Ashish How are you?</div> -->
+      <!-- <div class="message left">Ashish:I'm Fine WAU??</div> -->
+    </div>
+    <div class="send">
+      <form action="" id="send-container">
+        <input
+          type="text"
+          placeholder="Enter the message"
+          name="messageInp"
+          id="messageInp"
+        />
+        <button class="btn" id="xcv" type="submit" autocomplete="off">
+          Send
+        </button>
+      </form>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      var socket = io();
+      const form = document.getElementById("send-container");
+      const messageInput = document.getElementById("messageInp");
+      const messageContainer = document.querySelector(".container");
+      //var audio = new Audio("/tune.mp3");
+      const name = prompt("enter your name to join the chat");
+
+      const append = (message, position) => {
+        const messageElement = document.createElement("div");
+        messageElement.innerText = message;
+        messageElement.classList.add("message");
+        messageElement.classList.add(position);
+        messageContainer.append(messageElement);
+        // if (position == "left") {
+        //   console.log("play");
+        //   audio.play();
+        // }
+      };
+      socket.emit("new-user-joined", name);
+      socket.on("user-joined", (name) => {
+        append(`${name} joined the chat`, "right");
+      });
+      socket.on("receive", (data) => {
+        append(`${data.name}:${data.message} `, "left");
+      });
+      socket.on("left", (name) => {
+        append(`${name} left the chat `, "left");
+      });
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        const message = messageInput.value;
+        append(`You: ${message}`, "right");
+        socket.emit("send", message);
+        messageInput.value = "";
+      });
+    </script>
+    <!-- <img src="/chatlogo.png" alt="not found pic" class="logo" /> -->
+  </body>
+</html>
